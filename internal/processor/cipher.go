@@ -17,7 +17,7 @@ func CipherBlock(keyPhrase []byte) (block cipher.Block, err error) {
 	)
 
 	if l := len(keyPhrase); l == 0 {
-		key = make([]byte, aes.BlockSize)
+		key = make([]byte, aes128)
 	} else if l == aes256 || l == aes192 || l == aes128 {
 		key = keyPhrase
 	} else if l > aes256 {

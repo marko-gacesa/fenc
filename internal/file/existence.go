@@ -1,11 +1,11 @@
-package util
+package file
 
 import (
 	"fmt"
 	"os"
 )
 
-func MustExist(fileName string) error {
+func MustBeReadable(fileName string) error {
 	fileInfo, err := os.Stat(fileName)
 	if err != nil && os.IsNotExist(err) {
 		return fmt.Errorf("file not exists: %q", fileName)
@@ -15,6 +15,10 @@ func MustExist(fileName string) error {
 
 	if fileInfo.IsDir() {
 		return fmt.Errorf("file is a directory: %q", fileName)
+	}
+
+	if fileInfo.Mode().Perm()&0o444 == 0 {
+		return fmt.Errorf("file is not readable: %q", fileName)
 	}
 
 	return nil
